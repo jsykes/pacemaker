@@ -1,0 +1,37 @@
+local runButton = {};
+
+local function touch(event)
+	if(event.phase == 'began')then
+		Runtime:dispatchEvent({name = 'HeartbeatDown'});
+	elseif(event.phase == 'ended')then
+		Runtime:dispatchEvent({name = 'HeartbeatUp'});
+                Runtime:dispatchEvent({name = 'Heartbeat'});
+	end
+end
+
+local function tap(event)
+	Runtime:dispatchEvent({name = 'Heartbeat'});
+end
+
+function runButton:new()
+	local button = {};
+	button = setmetatable(button, {__INDEX = runButton});
+	button.group = display.newGroup();
+	button.rect = display.newRect(_W * .9, _H * .9, _W * .1, _H - (_H * .9));
+        button.rect:setFillColor(255,0,0);
+	button.group:insert(button.rect);
+	
+	button.group:addEventListener("touch", touch);
+	--button.group:addEventListener("tap", tap);
+        runButton.button = button.group;
+        
+	return runButton;
+end
+
+function runButton:kill()
+	self.button:removeEventListener("touch", touch);
+	--self.group:removeEventListener("tap", tap);
+        display.remove(runButton.button);
+end
+
+return runButton;

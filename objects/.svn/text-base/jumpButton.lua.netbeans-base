@@ -1,0 +1,30 @@
+local jumpButton = {};
+
+local function tap(event)
+	--print("jump button tapped");
+	Runtime:dispatchEvent({name = 'Jump'});
+end
+	
+function jumpButton:new()
+	local button = {};
+	button = setmetatable(button, {__INDEX = jumpButton});
+	button.group = display.newGroup();
+	button.rect = display.newRect(0, _H * .9, _W * .1, _H - (_H * .9));
+        button.rect:setFillColor(0,255,0);
+	button.group:insert(button.rect);
+	
+	
+	button.group:addEventListener("tap", tap);
+	
+        jumpButton.button = button.group;
+        
+	return jumpButton;
+end
+
+function jumpButton:kill()
+	self.button:removeEventListener("tap", tap);
+        
+        display.remove(jumpButton.button);
+end
+
+return jumpButton;
